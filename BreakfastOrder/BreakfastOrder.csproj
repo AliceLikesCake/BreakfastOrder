@@ -208,6 +208,8 @@
     <Content Include="Content\images\logo.png" />
     <Content Include="Content\images\toast.png" />
     <Content Include="Content\layout.css" />
+    <Content Include="Content\loginstyles.css" />
+    <Content Include="Content\register.css" />
     <Content Include="Content\meal.css" />
     <Content Include="Content\meal2.css" />
     <Content Include="Content\member.css" />
@@ -215,9 +217,11 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Html\changepassword.html" />
+    <Content Include="Html\login.html" />
     <Content Include="Html\meal.html" />
     <Content Include="Html\member.html" />
     <Content Include="Html\orderlist.html" />
+    <Content Include="Html\register.html" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
