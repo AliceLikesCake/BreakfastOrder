@@ -6,38 +6,39 @@ namespace BreakfastOrder.Models.EFModels
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Product
+    public partial class Order
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Product()
+        public Order()
         {
             OrderDetails = new HashSet<OrderDetail>();
-            ProductAddOnDetails = new HashSet<ProductAddOnDetail>();
+            PointDetails = new HashSet<PointDetail>();
         }
 
         public int Id { get; set; }
 
-        public int ProductCategoryId { get; set; }
+        public int TakeOrderNumber { get; set; }
 
-        [Required]
-        [StringLength(50)]
-        public string Name { get; set; }
+        public DateTime OrderTime { get; set; }
 
-        public int Price { get; set; }
+        public DateTime TakeTime { get; set; }
 
-        [StringLength(255)]
-        public string Image { get; set; }
+        public int? MemberID { get; set; }
 
-        public bool IsAvailable { get; set; }
+        public int Total { get; set; }
 
-        public int? DisplayOrder { get; set; }
+        public int PointsUsed { get; set; }
+
+        public int FinalTotal { get; set; }
+
+        public int OrderStatus { get; set; }
+
+        public virtual Member Member { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<OrderDetail> OrderDetails { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ProductAddOnDetail> ProductAddOnDetails { get; set; }
-
-        public virtual ProductCategory ProductCategory { get; set; }
+        public virtual ICollection<PointDetail> PointDetails { get; set; }
     }
 }

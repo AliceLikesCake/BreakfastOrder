@@ -6,13 +6,18 @@ using System.Net.Http;
 using System.Web.Http;
 using BreakfastOrder.Models.EFModels;
 using BreakfastOrder.Models.ViewModels;
+using System.Data.Entity;
 
 namespace BreakfastOrder.Controllers.Apis
 {
-    [RoutePrefix("api/Categoriesapi")]
+    
     public class CategoriesApiController : ApiController
     {
-        public IHttpActionResult GetAll()
+
+
+        [HttpGet]
+        [Route("api/categoriesapi/all")]
+        public IHttpActionResult GetAllCategories()
         {
             var db = new AppDbContext();
 
@@ -30,41 +35,45 @@ namespace BreakfastOrder.Controllers.Apis
 
         }
 
-
-        public IHttpActionResult Get(int id)
+        [HttpGet]
+        [Route("api/categoriesapi/products")]
+        public IHttpActionResult GetAllProducts(int categoryId)
         {
             var db = new AppDbContext();
 
-            var Category = db.ProductCategories
-                .AsNoTracking()
-                //.Include(c => c.Products)
-                .First(c => c.Id == id);
+            var data = db.Products
+                .Where(p => p.ProductCategoryId == categoryId && p.IsAvailable)
+                .Include(p => p.ProductCategory)
 
-            if (Category == null)   
-            {
-                return NotFound();
-            }
-            var data = new
-
-            {
-                Category.Id,
-                Category.Name,
-                Category.DisplayOrder,
-                Category.Image,
-
-                Products = Category
-                .Products
-                .Select(p => new
+                .Select(p => new ProductVm
                 {
-                    p.Id,
-                    p.Name,
-                    p.Price,
-                })
-                .ToList()
-            };
+                    Id = p.Id,
+                    Image = p.Image,
+                    Alt = p.Name, // 假設商品名稱也可以用作圖片描述    
+                    CategoryId = p.ProductCategoryId,
+                    Text = p.Name,
+                    Price = p.Price,
+                    Currency = "NT$", // 假設使用固定的貨幣
+                    Category = p.ProductCategory.Name, // 從關聯的 ProductCategories 表中取得類別名稱
+                    IsAvailable = p.IsAvailable,
+                    Options = db.ProductAddOnDetails
+                        .Where(a => a.ProductId == p.Id)
+                        .GroupBy(a => new { a.AddOnCategory.Name, a.AddOnCategory.IsSingleChoice }) // 根據加選類別分組
+                        .Select(g => new ProductOptionVm
+                        {
+                            Type = g.Key.IsSingleChoice ? "radio" : "checkbox", // 根據是否單選來決定類型
+                            Category = g.Key.Name,
+                            Items = g.Select(o => new ProductAddOnItemVm
+                            {
+                                Label = o.AddOnOptionName,
+                                Name = o.AddOnOptionName,
+                                Price = o.AddOnOption.Price, // 假設這裡有個加選價格
+                                ProductAddOnDetailsId = o.Id
+                            }).ToList()
+                        }).ToList()
+                }).ToList();
 
             return Ok(data);
-
         }
 
     }

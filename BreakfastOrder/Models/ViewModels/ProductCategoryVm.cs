@@ -16,5 +16,6 @@ namespace BreakfastOrder.Models.ViewModels
 
 
         public string Image { get; set; }
+        public List<ProductVm> Products { get; internal set; }
     }
 }

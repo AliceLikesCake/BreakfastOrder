@@ -6,29 +6,35 @@ namespace BreakfastOrder.Models.EFModels
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class AddOnOption
+    public partial class OrderDetail
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public AddOnOption()
+        public OrderDetail()
         {
-            ProductAddOnDetails = new HashSet<ProductAddOnDetail>();
+            OrderAddOnDetails = new HashSet<OrderAddOnDetail>();
         }
 
         public int Id { get; set; }
 
+        public int OrderID { get; set; }
+
+        public int ProductID { get; set; }
+
         [Required]
         [StringLength(50)]
-        public string Name { get; set; }
+        public string ProductName { get; set; }
 
-        public int AddOnCategoryId { get; set; }
+        public int ProductPrice { get; set; }
 
-        public int Price { get; set; }
+        public int ProductQuantity { get; set; }
 
-        public int? DisplayOrder { get; set; }
-
-        public virtual AddOnCategory AddOnCategory { get; set; }
+        public int SubTotal { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ProductAddOnDetail> ProductAddOnDetails { get; set; }
+        public virtual ICollection<OrderAddOnDetail> OrderAddOnDetails { get; set; }
+
+        public virtual Order Order { get; set; }
+
+        public virtual Product Product { get; set; }
     }
 }

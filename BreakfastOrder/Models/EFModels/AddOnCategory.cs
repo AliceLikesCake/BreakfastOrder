@@ -23,6 +23,8 @@ namespace BreakfastOrder.Models.EFModels
 
         public int? DisplayOrder { get; set; }
 
+        public bool IsSingleChoice { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AddOnOption> AddOnOptions { get; set; }
 
